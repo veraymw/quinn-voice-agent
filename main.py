@@ -114,14 +114,18 @@ async def salesforce_lookup_endpoint(
         
         result = await salesforce_client.lookup_phone_number(request.phone_number)
         
-        # Extract dynamic variables from Salesforce result
+        # Extract dynamic variables for Telnyx (match expected format)
         record = result.get("record", {}) if result.get("found") else {}
+        name_parts = record.get("Name", "").split(" ", 1) if record.get("Name") else ["", ""]
+        
         dynamic_variables = {
-            "caller_name": record.get("Name", "Unknown"),
-            "caller_company": record.get("Company", ""),
-            "caller_type": result.get("type", "unknown"),
-            "ae_name": record.get("AE_Name", ""),
-            "ae_phone": record.get("AE_Phone", "")
+            "account_found": "true" if result.get("found") else "false",
+            "first_name": name_parts[0] if len(name_parts) > 0 else "",
+            "last_name": name_parts[1] if len(name_parts) > 1 else "",
+            "email": record.get("Email", ""),
+            "company": record.get("Company", ""),
+            "ae_phone": record.get("AE_Phone", ""),
+            "ae_name": record.get("AE_Name", "")
         }
         
         # Log activity in background
@@ -131,7 +135,7 @@ async def salesforce_lookup_endpoint(
             conversation_id=request.conversation_id or "unknown",
             tool_used="salesforce_lookup",
             input_summary=f"Phone: {request.phone_number}",
-            output_summary=f"Found: {result.get('found', False)} - {dynamic_variables['caller_name']}",
+            output_summary=f"Found: {result.get('found', False)} - {dynamic_variables['first_name']} {dynamic_variables['last_name']}",
             duration_ms=duration_ms,
             caller_info=result
         )

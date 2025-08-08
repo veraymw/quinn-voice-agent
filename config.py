@@ -21,7 +21,7 @@ class Settings(BaseSettings):
     openai_model: str = "gpt-4o-mini"  # Fast model for voice calls
     
     # Server Configuration
-    webhook_base_url: str = "https://your-replit-url.com"
+    webhook_base_url: str = "https://quinn-voice-agent-TelnyxViewer.replit.app"
     port: int = 8000
     debug: bool = False
     
