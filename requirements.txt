@@ -1,0 +1,27 @@
+# FastAPI and async support (updated for Python 3.13 compatibility)
+fastapi
+uvicorn[standard]
+pydantic
+pydantic-settings
+
+# Salesforce integration
+simple-salesforce
+
+# LangChain for AI Agent
+langchain
+langchain-openai
+langchain-core
+langchain-community
+langgraph
+
+# External integrations
+slack-sdk
+google-api-python-client
+google-auth
+gspread
+
+# Utilities
+python-multipart
+python-dotenv
+httpx
+aiohttp
