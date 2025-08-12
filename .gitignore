@@ -148,3 +148,26 @@ config/secrets.py
 .replit
 replit.nix
 .upm/
+
+# Test outputs and logs
+tests/conversation_logs/
+tests/reports/
+tests/__pycache__/
+tests/*/__pycache__/
+tests/**/__pycache__/
+*.pyc
+test_results.json
+test_results.txt
+test_results.csv
+conversation_test_results.*
+performance_results.*
+coverage_report/
+htmlcov/
+.coverage
+.pytest_cache/
+
+# Test temporary files
+tests/temp/
+tests/tmp/
+test_*.log
+*_test_output.*
