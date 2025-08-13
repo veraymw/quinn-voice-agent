@@ -1,6 +1,6 @@
 from langchain_openai import ChatOpenAI
 from langgraph.prebuilt import create_react_agent
-from typing import Dict, Any, List
+from typing import Dict, Any, List, Union
 import json
 import logging
 
@@ -41,7 +41,7 @@ class QuinnAgent:
     async def think_and_act(
         self, 
         conversation_context: str, 
-        caller_info: Dict[str, Any] = None,
+        caller_info: Union[str, Dict[str, Any]] = None,
         specific_query: str = None
     ) -> Dict[str, Any]:
         """
@@ -56,10 +56,28 @@ class QuinnAgent:
             Agent's decision and reasoning
         """
         try:
+            # Convert caller_info from string to dict if needed
+            if isinstance(caller_info, str):
+                # Parse string format like "Lead: Yimeng Wang, Company: NetEase Games, Status: SSL"
+                try:
+                    caller_dict = {}
+                    if caller_info.strip():
+                        parts = caller_info.split(", ")
+                        for part in parts:
+                            if ": " in part:
+                                key, value = part.split(": ", 1)
+                                caller_dict[key.strip()] = value.strip()
+                        caller_info = caller_dict
+                except Exception:
+                    # If parsing fails, create a simple dict
+                    caller_info = {"raw_info": caller_info}
+            elif caller_info is None:
+                caller_info = {}
+            
             # Construct the input message for modern agent
             user_message = f"""Conversation Context: {conversation_context}
             
-Caller Information: {json.dumps(caller_info or {}, indent=2)}
+Caller Information: {json.dumps(caller_info, indent=2)}
 
 {f"Specific Query: {specific_query}" if specific_query else ""}
 

@@ -6,7 +6,7 @@ in the Quinn Voice Agent system, including Telnyx webhook integration.
 """
 
 from pydantic import BaseModel, Field
-from typing import Dict, Any, Optional
+from typing import Dict, Any, Optional, Union
 
 # Request Models for Telnyx Webhook Tools (Simple Parameter Mode)
 
@@ -42,9 +42,9 @@ class AgentRequest(BaseModel):
         ..., 
         description="Type of analysis needed (e.g., 'score and routing recommendation', 'product pricing overview')"
     )
-    caller_info: Optional[Dict[str, Any]] = Field(
+    caller_info: Optional[Union[str, Dict[str, Any]]] = Field(
         None, 
-        description="Salesforce lookup result if available"
+        description="Salesforce lookup result - can be string or dict format"
     )
     conversation_id: Optional[str] = Field(
         None, 
