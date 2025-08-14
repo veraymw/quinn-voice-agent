@@ -5,7 +5,7 @@ import logging
 
 logger = logging.getLogger(__name__)
 
-# Mock phone numbers for transfer targets (replace with real numbers)
+# Enhanced transfer targets with intent-aware routing
 TRANSFER_TARGETS = {
     "AE": {
         "name": "Account Executive Queue",
@@ -16,20 +16,32 @@ TRANSFER_TARGETS = {
         "name": "Business Development Rep Queue", 
         "phone": "+1-555-0200",  # Replace with real BDR queue number
         "description": "For urgent SSL/DQ leads or complex situations"
+    },
+    "SUPPORT": {
+        "name": "Customer Support",
+        "phone": "+1-555-0300",  # Replace with real support number
+        "description": "For existing customer issues and technical support"
+    },
+    "BILLING": {
+        "name": "Billing Support",
+        "phone": "+1-555-0400",  # Replace with real billing number
+        "description": "For billing questions and account management"
     }
 }
 
 
 @tool
-def transfer_tool(qualification: str, urgency: str, reason: str, caller_info: str = "{}") -> str:
+def transfer_tool(qualification: str, urgency: str, reason: str, caller_info: str = "{}", 
+                 intent_classification: str = "{}") -> str:
     """
-    Determine call transfer routing based on qualification and urgency.
+    Determine call transfer routing based on qualification, urgency, and intent classification.
     
     Args:
         qualification: Lead qualification level (SQL, SSL, DQ)
         urgency: Urgency level (high, low)
         reason: Reason for transfer consideration
         caller_info: JSON string of caller information
+        intent_classification: JSON string of intent classification data from qualification_tool
         
     Returns:
         JSON string with transfer decision and target information
@@ -41,29 +53,67 @@ def transfer_tool(qualification: str, urgency: str, reason: str, caller_info: st
         except json.JSONDecodeError:
             caller_data = {}
         
-        logger.info(f"Transfer decision for {qualification} lead with {urgency} urgency")
+        # Parse intent classification
+        try:
+            intent_data = json.loads(intent_classification) if intent_classification else {}
+        except json.JSONDecodeError:
+            intent_data = {}
         
-        # Transfer logic based on qualification and urgency
+        primary_intent = intent_data.get("primary_intent", "other")
+        intent_confidence = intent_data.get("confidence", 0.0)
+        
+        logger.info(f"Transfer decision for {qualification} lead with {urgency} urgency and {primary_intent} intent (confidence: {intent_confidence:.2f})")
+        
+        # Intent-aware transfer logic
         should_transfer = False
         transfer_target = None
         transfer_reason = ""
         
-        if qualification == "SQL":
-            # SQL always goes to AE regardless of urgency
+        # Priority 1: Support intent - Route to support regardless of qualification
+        if primary_intent == "support" and intent_confidence >= 0.7:
             should_transfer = True
-            transfer_target = "AE"
-            transfer_reason = "Qualified SQL lead - routing to Account Executive"
             
-        elif qualification in ["SSL", "DQ"] and urgency == "high":
-            # High urgency SSL/DQ goes to BDR
-            should_transfer = True
-            transfer_target = "BDR"
-            transfer_reason = "High urgency situation - routing to BDR for immediate assistance"
-            
+            # Determine support type based on conversation content
+            reason_lower = reason.lower()
+            if any(word in reason_lower for word in ["billing", "invoice", "payment", "credit card"]):
+                transfer_target = "BILLING"
+                transfer_reason = "Support intent detected - routing to Billing Support for account issues"
+            else:
+                transfer_target = "SUPPORT"
+                transfer_reason = "Support intent detected - routing to Customer Support for technical assistance"
+                
+        # Priority 2: Sales intent with qualification-based routing
+        elif primary_intent == "sales" and intent_confidence >= 0.7:
+            if qualification == "SQL":
+                # High-value sales leads go to AE
+                should_transfer = True
+                transfer_target = "AE"
+                transfer_reason = "Sales intent + SQL qualification - routing to Account Executive"
+                
+            elif qualification in ["SSL", "DQ"] and urgency == "high":
+                # Urgent lower-qualified sales leads go to BDR
+                should_transfer = True
+                transfer_target = "BDR" 
+                transfer_reason = "Sales intent + high urgency - routing to BDR for immediate assistance"
+            else:
+                # Continue conversation for discovery
+                should_transfer = False
+                transfer_reason = "Sales intent + low urgency - continuing discovery conversation"
+                
+        # Priority 3: Other intent or low confidence - Use traditional qualification logic
         else:
-            # SSL/DQ with low urgency continues with Quinn
-            should_transfer = False
-            transfer_reason = "Continuing conversation with Quinn - no transfer needed"
+            if qualification == "SQL":
+                should_transfer = True
+                transfer_target = "AE"
+                transfer_reason = "SQL qualification - routing to Account Executive (intent unclear)"
+                
+            elif qualification in ["SSL", "DQ"] and urgency == "high":
+                should_transfer = True
+                transfer_target = "BDR"
+                transfer_reason = "High urgency situation - routing to BDR (intent unclear)"
+            else:
+                should_transfer = False
+                transfer_reason = "Continuing conversation - unclear intent, additional discovery needed"
         
         # Get transfer target details
         target_info = None
@@ -83,7 +133,23 @@ def transfer_tool(qualification: str, urgency: str, reason: str, caller_info: st
             "target_info": target_info,
             "qualification": qualification,
             "urgency": urgency,
-            "original_reason": reason
+            "original_reason": reason,
+            
+            # Intent classification information (NEW)
+            "intent_classification": {
+                "primary_intent": primary_intent,
+                "confidence": intent_confidence,
+                "reasoning": intent_data.get("intent_reasoning", "No intent reasoning available")
+            },
+            
+            # Enhanced routing metadata
+            "routing_logic": "intent_aware",
+            "intent_confidence_threshold": 0.7,
+            "routing_priority": (
+                "support" if primary_intent == "support" and intent_confidence >= 0.7 else
+                "sales_qualified" if primary_intent == "sales" and qualification == "SQL" else
+                "traditional_qualification"
+            )
         }
         
         if should_transfer:

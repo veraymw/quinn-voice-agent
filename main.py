@@ -19,6 +19,7 @@ from core.data import (
     AgentRequest,
     SlackNotificationRequest,
     ActivityLogRequest,
+    ResponseValidationRequest,
     TelnyxToolResponse
 )
 
@@ -187,11 +188,26 @@ async def agent_think_and_act_endpoint(
                 error="Quinn agent not initialized"
             )
         
-        result = await quinn_agent.think_and_act(
-            conversation_context=request.conversation_context,
-            caller_info=request.caller_info,
-            specific_query=request.specific_query
-        )
+        # Add timeout for voice call optimization
+        try:
+            result = await asyncio.wait_for(
+                quinn_agent.think_and_act(
+                    conversation_context=request.conversation_context,
+                    caller_info=request.caller_info,
+                    specific_query=request.specific_query
+                ),
+                timeout=25.0  # 20 second timeout
+            )
+        except asyncio.TimeoutError:
+            return TelnyxToolResponse(
+                success=False,
+                error="Agent reasoning timed out - please try a simpler query",
+                dynamic_variables={
+                    "qualification_level": "NEEDS_INFO",
+                    "should_transfer": False
+                },
+                meta={"execution_time_ms": 20000}
+            )
         
         # Extract dynamic variables from agent reasoning
         dynamic_variables = {}
@@ -403,6 +419,65 @@ async def log_activity_endpoint(request: ActivityLogRequest) -> TelnyxToolRespon
         )
 
 
+# Response validation endpoint (Direct tool)
+@app.post("/tools/validate-response", response_model=TelnyxToolResponse)
+async def validate_response_endpoint(
+    request: ResponseValidationRequest,
+    background_tasks: BackgroundTasks
+) -> TelnyxToolResponse:
+    """Validate Quinn's intended response against capability boundaries"""
+    start_time = datetime.now()
+    
+    try:
+        # Import validation tool
+        from agent.tools.response_validator import response_validator
+        
+        result = response_validator.invoke({
+            "intended_response": request.intended_response,
+            "conversation_context": request.conversation_context or ""
+        })
+        
+        # Log activity in background
+        duration_ms = int((datetime.now() - start_time).total_seconds() * 1000)
+        background_tasks.add_task(
+            log_activity_background,
+            conversation_id=request.conversation_id or "unknown",
+            tool_used="response_validator",
+            input_summary=f"Response: {request.intended_response[:100]}...",
+            output_summary=f"Approved: {result.get('approved', False)}",
+            duration_ms=duration_ms,
+            status="success" if result.get('approved', False) else "blocked"
+        )
+        
+        return TelnyxToolResponse(
+            success=True,
+            data=result,
+            meta={"execution_time_ms": duration_ms}
+        )
+        
+    except Exception as e:
+        logger.error(f"Error validating response: {str(e)}")
+        
+        # Log error in background
+        duration_ms = int((datetime.now() - start_time).total_seconds() * 1000)
+        background_tasks.add_task(
+            log_activity_background,
+            conversation_id=request.conversation_id or "unknown",
+            tool_used="response_validator",
+            input_summary="Validation request",
+            output_summary="Error occurred",
+            duration_ms=duration_ms,
+            status="error",
+            error=str(e)
+        )
+        
+        return TelnyxToolResponse(
+            success=False,
+            error=str(e),
+            meta={"execution_time_ms": duration_ms}
+        )
+
+
 # Test endpoints for development
 @app.get("/test/salesforce/{phone}")
 async def test_salesforce_lookup(phone: str):
@@ -420,6 +495,17 @@ async def test_sheets_stats():
         raise HTTPException(status_code=500, detail="Sheets logger not initialized")
     
     return await sheets_logger.get_call_stats(days=7)
+
+
+@app.post("/test/validate-response")
+async def test_validation(request: ResponseValidationRequest):
+    """Test response validation"""
+    from agent.tools.response_validator import response_validator
+    
+    return response_validator.invoke({
+        "intended_response": request.intended_response,
+        "conversation_context": request.conversation_context or ""
+    })
 
 
 # Background task for logging

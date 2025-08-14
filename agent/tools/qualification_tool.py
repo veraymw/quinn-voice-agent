@@ -3,6 +3,28 @@ Smart conversational lead qualification tool with AI-driven decision making.
 
 This tool uses Instructor for structured data extraction and includes intelligent 
 follow-up question generation when qualification data is incomplete or unclear.
+ 
+This tool is used to generate the following JSON response:
+{
+  "intent_classification": {
+    "primary_intent": "sales|support|other",
+    "confidence": 0.85,
+    "intent_reasoning": "Customer asking about pricing for new implementation",
+    "context_shift": false,
+    "supporting_evidence": ["interested in SMS services", "exploring alternatives", "pricing discussion"]
+  },
+  "sales_stage": "SQL|SSL|DQ|NEEDS_INFO",
+  "routing_guidance": "Sales qualified lead - transfer to Account Executive",
+  "response_guidance": "This customer shows strong sales intent...",
+  "extracted_data": {
+    "monthly_budget": 2000,
+    "monthly_volume": 50000,
+    "volume_type": "SMS messages",
+    "use_case": "Business SMS communications",
+    "ai_voice_interest": false,
+    "current_provider": "Twilio"
+  }
+}
 """
 
 from langchain_core.tools import tool
@@ -21,7 +43,8 @@ from ..models.qualification_models import (
     BusinessQuality,
     ExtractedQualificationData,
     FollowUpQuestion,
-    QualificationDecision
+    QualificationDecision,
+    IntentClassification
 )
 
 logger = logging.getLogger(__name__)
@@ -41,7 +64,9 @@ class SmartQualificationEngine:
         if not api_key:
             raise ValueError("OPENAI_API_KEY environment variable is required")
         
-        self.client = instructor.from_openai(OpenAI(api_key=api_key))
+        self.client = instructor.from_openai(
+            OpenAI(api_key=api_key, timeout=10)  # Faster timeout
+        )
         
         # Telnyx thresholds from Quinn Email system
         self.sql_thresholds = {
@@ -121,13 +146,98 @@ class SmartQualificationEngine:
             logger.error(f"Error in data extraction: {str(e)}")
             return ExtractedQualificationData()
     
+    def classify_intent(self, conversation_context: str, caller_info: dict, 
+                       previous_intent: str = None) -> IntentClassification:
+        """Classify conversation intent using context analysis"""
+        
+        system_prompt = """
+        You are an expert intent classifier for Telnyx customer conversations.
+        
+        INTENT CLASSIFICATION RULES:
+        
+        1. SALES Intent - New business, pricing inquiries, product demos:
+           - "Looking for SMS/voice services", "pricing information", "competitor comparison"
+           - "new customer", "evaluating providers", "migration from [provider]"  
+           - Budget discussions, volume requirements
+           - "need a quote", "want to try", "how much does it cost"
+        
+        2. SUPPORT Intent - Existing customer issues, technical problems:
+           - "billing question", "invoice", "credit card not working", "payment failed"
+           - "service is down", "not receiving messages", "calls aren't working"
+           - "account access", "password reset", "portal issues", technical requirements
+           - "existing customer", "current client", "we use Telnyx"
+        
+        3. OTHER Intent - Unclear, general inquiry, mixed needs:
+           - "what does Telnyx do", "general information", "just browsing"
+           - Mixed sales and support needs in same conversation
+           - Unclear business case or intent
+        
+        CONTEXT SHIFT DETECTION:
+        - True if intent clearly changed from previous classification
+        - Examples: "Actually, before that, I'm having issues with..." (Sales→Support)
+        - "Also, we're looking to expand our usage..." (Support→Sales)
+        """
+        
+        user_prompt = f"""
+        CONVERSATION CONTEXT:
+        {conversation_context}
+        
+        CALLER INFO:
+        {json.dumps(caller_info, indent=2) if caller_info else 'None available'}
+        
+        PREVIOUS INTENT: {previous_intent or 'None'}
+        
+        Analyze this conversation and classify the primary intent. Look for:
+        1. Clear intent signals in the conversation
+        2. Supporting evidence for your classification
+        3. Whether intent shifted from previous classification
+        4. Confidence level based on clarity of intent signals
+        """
+        
+        try:
+            intent_classification = self.client.chat.completions.create(
+                model="gpt-4o",
+                messages=[
+                    {"role": "system", "content": system_prompt},
+                    {"role": "user", "content": user_prompt}
+                ],
+                response_model=IntentClassification,
+                max_retries=2
+            )
+            
+            logger.info(f"Intent classified: {intent_classification.primary_intent} (confidence: {intent_classification.confidence:.2f})")
+            return intent_classification
+            
+        except Exception as e:
+            logger.error(f"Error in intent classification: {str(e)}")
+            return IntentClassification(
+                primary_intent="other",
+                confidence=0.0,
+                intent_reasoning=f"Classification error: {str(e)}",
+                context_shift=False,
+                supporting_evidence=[]
+            )
+    
     def make_qualification_decision(self, data: ExtractedQualificationData, 
-                                  conversation_context: str) -> QualificationDecision:
-        """Make intelligent qualification decision with follow-up handling"""
+                                  conversation_context: str, caller_info: dict = None,
+                                  previous_intent: str = None) -> QualificationDecision:
+        """Make intelligent qualification decision with intent classification and follow-up handling"""
+        
+        # First classify intent
+        intent_classification = self.classify_intent(
+            conversation_context, 
+            caller_info or {}, 
+            previous_intent
+        )
         
         system_prompt = f"""
-        You are a smart Telnyx sales qualification agent. Make qualification decisions 
+        You are a smart Telnyx sales qualification agent with intent-awareness. Make qualification decisions 
         using these precise rules and determine if follow-up questions are needed.
+        
+        INTENT-AWARE QUALIFICATION:
+        - SALES intent: Focus on budget/volume discovery and qualification scoring
+        - SUPPORT intent: Lower qualification priority, focus on routing to appropriate support
+        - OTHER intent: Gentle discovery to clarify intent and business needs
 
         QUALIFICATION RULES (from Quinn Email system):
         
@@ -161,7 +271,7 @@ class SmartQualificationEngine:
         FOLLOW-UP GUIDANCE:
         If qualified prospects don't know their current spend/usage, explain:
         "Our sales team works with customers who typically spend $1,000+ monthly 
-        (roughly 400K+ SMS messages or equivalent usage). If you're below that, 
+        (roughly [volume] or equivalent usage). If you're below that, 
         our self-service platform is the best way to get started immediately."
         
         For AI voice prospects: Prioritize as SQL even with lower volumes.
@@ -177,15 +287,21 @@ class SmartQualificationEngine:
         CONVERSATION CONTEXT:
         {conversation_context}
         
-        Make the qualification decision. If you need more information for a proper 
+        INTENT CLASSIFICATION:
+        {intent_classification.model_dump_json(indent=2)}
+        
+        Make the qualification decision with intent awareness. If you need more information for a proper 
         decision (especially for promising businesses), generate a smart follow-up question
         that helps determine spend/usage levels or business quality.
         
         Consider:
         1. Does this meet clear SQL/SSL/DQ criteria?
         2. Is this a high-quality business that deserves more discovery?
-        3. Would a follow-up question significantly improve qualification accuracy?
-        4. What's the best way to handle this prospect?
+        3. How does the intent classification affect routing and response approach?
+        4. Would a follow-up question significantly improve qualification accuracy?
+        5. What's the best way to handle this prospect based on their intent?
+        
+        Include the intent classification in your response and provide routing guidance.
         """
         
         try:
@@ -199,25 +315,55 @@ class SmartQualificationEngine:
                 max_retries=2
             )
             
-            # Set transfer routing based on stage
-            if decision.stage == "SQL":
-                decision.recommend_transfer = True
-                decision.transfer_target = "AE"
-            elif decision.stage == "SSL" and any("urgent" in sig.lower() for sig in data.urgency_signals):
-                decision.recommend_transfer = True
-                decision.transfer_target = "BDR"
+            # Manually set the intent classification since model might not include it
+            decision.intent_classification = intent_classification
             
-            logger.info(f"Qualification decision: {decision.stage} - {decision.reasoning}")
+            # Intent-aware routing logic
+            if intent_classification.primary_intent == "support":
+                # Support intent: Route to support resources
+                decision.routing_guidance = "Route to support team - existing customer with account/technical issues"
+                if decision.stage in ["SQL", "SSL"]:
+                    # Even qualified leads with support intent need support first
+                    decision.recommend_transfer = False  # Handle support first
+                    decision.response_guidance += " Let me connect you with our support team to resolve your issue first."
+            elif intent_classification.primary_intent == "sales":
+                # Sales intent: Standard qualification routing
+                if decision.stage == "SQL":
+                    decision.recommend_transfer = True
+                    decision.transfer_target = "AE"
+                    decision.routing_guidance = "Sales qualified lead - transfer to Account Executive"
+                elif decision.stage == "SSL" and any("urgent" in sig.lower() for sig in data.urgency_signals):
+                    decision.recommend_transfer = True
+                    decision.transfer_target = "BDR"
+                    decision.routing_guidance = "Urgent self-service lead - transfer to BDR"
+                else:
+                    decision.routing_guidance = "Continue discovery conversation - potential for self-service"
+            else:
+                # Other intent: Gentle discovery
+                decision.routing_guidance = "Continue discovery to clarify intent and business needs"
+            
+            logger.info(f"Qualification decision: {decision.stage} - Intent: {intent_classification.primary_intent} - {decision.reasoning}")
             return decision
             
         except Exception as e:
             logger.error(f"Error in qualification decision: {str(e)}")
+            # Fallback intent classification
+            fallback_intent = IntentClassification(
+                primary_intent="other",
+                confidence=0.0,
+                intent_reasoning=f"Error in processing: {str(e)}",
+                context_shift=False,
+                supporting_evidence=[]
+            )
+            
             return QualificationDecision(
                 stage="DQ",
                 confidence=0.0,
                 reasoning=f"Processing error: {str(e)}",
+                intent_classification=fallback_intent,
                 response_guidance="I apologize, but I'm having trouble processing your information. Let me connect you with someone who can help.",
-                extracted_data=data
+                extracted_data=data,
+                routing_guidance="Error handling - route to general support"
             )
 
 
@@ -256,10 +402,11 @@ def qualification_tool(conversation_context: str, caller_info: str = "{}") -> st
             caller_data
         )
         
-        # Make intelligent qualification decision
+        # Make intelligent qualification decision with intent classification
         decision = smart_qualification_engine.make_qualification_decision(
             extracted_data,
-            conversation_context
+            conversation_context,
+            caller_data
         )
         
         logger.info(f"Smart qualification complete: {decision.stage} (Confidence: {decision.confidence:.2f})")
@@ -278,6 +425,16 @@ def qualification_tool(conversation_context: str, caller_info: str = "{}") -> st
             # Smart response handling
             "response_guidance": decision.response_guidance,
             "follow_up_question": decision.follow_up_question.model_dump() if decision.follow_up_question else None,
+            
+            # Intent classification (NEW - Dynamic intent detection)
+            "intent_classification": {
+                "primary_intent": decision.intent_classification.primary_intent,
+                "confidence": decision.intent_classification.confidence,
+                "intent_reasoning": decision.intent_classification.intent_reasoning,
+                "context_shift": decision.intent_classification.context_shift,
+                "supporting_evidence": decision.intent_classification.supporting_evidence
+            },
+            "routing_guidance": decision.routing_guidance,
             
             # Detailed extracted data
             "extracted_data": {

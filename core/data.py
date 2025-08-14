@@ -146,6 +146,27 @@ class ActivityLogRequest(BaseModel):
     )
 
 
+class ResponseValidationRequest(BaseModel):
+    """
+    Request model for Response Validation tool.
+    
+    Validates Quinn's intended responses against capability boundaries
+    to prevent overcommitment and ensure appropriate responses.
+    """
+    intended_response: str = Field(
+        ..., 
+        description="Quinn's intended response to validate"
+    )
+    conversation_context: Optional[str] = Field(
+        None, 
+        description="Current conversation context for validation"
+    )
+    conversation_id: Optional[str] = Field(
+        None, 
+        description="Unique conversation identifier"
+    )
+
+
 # Response Models
 
 class TelnyxToolResponse(BaseModel):
@@ -212,6 +233,7 @@ __all__ = [
     "AgentRequest", 
     "SlackNotificationRequest",
     "ActivityLogRequest",
+    "ResponseValidationRequest",
     "TelnyxToolResponse",
     "DynamicVariables"
 ]

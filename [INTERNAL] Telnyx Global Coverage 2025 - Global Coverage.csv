@@ -1,0 +1,311 @@
+,,"PLEASE READ: 
+
+This document is internal, and the entire sheet should NOT be shared externally. To share information with a prospect: copy the file and screenshot or copy the cells related only to the targeted countries -- only share necessary information. Information in column L (Key Things to Know - Sales Bullets), for instance, include notes that you should use during your live conversations with the prospect.
+
+About column K (Numbers Catergory): 
+
+Cat A: These numbers can be sold without any restrictions to all our customers including the largest and most critical ones. 
+
+Cat B: These numbers cannot be resold, therefore should not be sold to SaaS. MSPs/SIs customers typically provide these numbers to Enterprise customers. These numbers can be sold without any restriction to customers using them for their own business (Enterprises, Digital Natives, etc...). 
+
+Cat C: Check with Numbering team (#help-global-number-coverage) before selling. These numbers should not be sold to SaaS or critical customers (large MSPs, SIs, Enterprises or Digital Natives). 
+
+Full PSTN replacement is a feature set, it allows you the same abilities as if you were using a local operator in each region. It's full feature parity of inbound and outbound local calling, geographic, and national number resources, emergency service-enabled numbers, Calling Line Identity (CLI) passthrough, dual-tone multi-frequency (DTMF) signaling, and number portability. 
+Note 1: The qualification of PSTN replacement is not applicable to Mobile or  Toll-Free numbers.
+Note 2: Full PSTN replacement does not imply a full coverage of the country, our coverage (set of numbers) can be partial. Please see additional information here : (This is a work in progress - I will link here once done - Paul)
+
+
+** For outbound international calling destinations, please refer to the global rate deck available within the Telnyx Portal.                             ",,,,,,,,,,,
+,,,,,,,,,,,,,
+,,,,,,,,,,,,,
+,,,,,,,,,,,,,
+,,,,,,,,,,,,,
+,,,,,,,,,,,,,
+Country,Number Type,Inbound Calling,Outbound Local,Outbound International**,Emergency Calling,Fax,Porting,Full PSTN Replacement,2-way SMS,Region,,Numbers Category,Key Things to Know (sales bullets)
+Albania,Local,Y,Y,Y,N,Y,Y,N,N,EMEA,,,(via aggregator)
+Albania,Toll-Free,Y,N,N,N,N,N,N/A,N,EMEA,,,(via aggregator)
+Angola,Local,Y,N,N,N,N,N,N,N,EMEA,,,
+Anguilla,Toll-Free,Y,N,N,N,N,N,N/A,N,EMEA,,,International access is not guaranteed.
+Antigua and Barbuda,Toll-Free,Y,,N,N,N,N,N/A,N,AMER,,,"National number format: 1 800 XXX XXXX. Numbers can also be called for free from Anguilla, Barbados, British Virgin Island, Cayman Islands, Dominica, Grenada, Jamaica, St Kitts & Nevis, St Lucia, St Vincent and Turk & Caicos. International access is not guaranteed."
+Argentina,Local,Y,Y,Y,Y,Y,Y,Y,N,AMER,,A,
+Argentina,Shared Cost,Y,N,N,N,N,N,N/A,N,AMER,,A,
+Argentina,Toll-Free,Y,N,N,N,N,Y,N/A,N,AMER,,A,
+Australia,Local,Y,Y,Y,Y,Y,Y,Y,N,APAC,,A,"The service provider is reposslble to upload address info to DB of regulator.  Or can ask Telnyx as his data provider. What also implies that each service provider needs to be ""licensed"""
+Australia,Mobile,Y,Y,Y,Y,N,Y,Y,Y,APAC,,A,"The service provider is reposslble to upload address info to DB of regulator.  Or can ask Telnyx as his data provider. What also implies that each service provider needs to be ""licensed"""
+Australia,Toll-Free,Y,N,N,N,N,Y,N/A,N,APAC,,A,
+Australia,Shared Cost (1300),Y,N,N,N,Y,Y,N,N,APAC,,,
+Austria,Local,Y,Y,Y,Y,Y,Y,Y,N,EMEA,,A,We have more coverage then most of our competitors. We need to register our reseller (only 1 level) in the database of the regulator (what implies that our resellers must be licensed in AT)
+Austria,Mobile,Y,N,Y,N,N,N,N/A,N,EMEA,,A,National numberformat 067 - XXX XXX XXX XX
+Austria,Toll-Free,Y,N,N,N,Y,Y,N/A,N,EMEA,,A,
+Bahamas,Toll-Free,Y,N,N,N,N,N,N/A,N,AMER,,,"Numbers can also be called for free from Anguilla, Antigua, Barbados, British Virgin Island, Cayman Islands, Dominica, Grenada, St Kitts & Nevis, St Lucia, St Vincent and Turk & Caicos, Montserrat."
+Bahrain,National,Y,Y,N,N,N,N,N,N,EMEA,,B/C,
+Bangladesh,Local,Y,N,N,N,N,N,N,N,APAC,,B,I doubt if this is legal. Voip license only allowed international incoming traffic
+Bangladesh,Mobile,Y,N,N,N,N,N,N,N,APAC,,A,National number format: 000800 -XXX-YYY. Minimum contract duration: 1 year. Average leadtime activations: Best effort
+Barbados,Local,Y,N,Y,N,N,N,N,N,AMER,,,National number-format: 1246 XXX XXXX.
+Barbados,Toll-Free,Y,N,N,N,N,N,N/A,N,AMER,,,National number format 1 8XX XXX XXXX. International access is not guaranteed.
+Belgium,Local,Y,Y,Y,Y,Y,Y,Y,N,EMEA,,A,Our own number ranges in Q3 / Q4. Only 1 reseller allowed
+Belgium,Mobile,Y,N,Y,N,N,N,N/A,Y,EMEA,,B,Strict verifiation if customer is in Belgium. Only 1 reseller allowed
+Belgium,Toll-Free,Y,N,N,N,Y,Y,N/A,N,EMEA,,A,
+Belize,Toll-Free,Y,N,N,N,N,N,N/A,N,AMER,,,National number format: 1 800 XXX XXXX
+Belize,Local,Y,N,N,N,N,N,N/A,N,AMER,,,
+Benin,Local,Y,N,N,N,N,N,N,N,EMEA,,,
+Benin,Mobile,Y,Y,N,N,N,N,N/A,N,EMEA,,B/C,National numberformat: 61 XXX XXX
+Bermuda,Toll-Free,Y,N,N,N,N,N,N/A,N,AMER,,,National number format: 1 800 XXX XXXX
+Bolivia,National,Y,N,Y,N,N,N,N,N,AMER,,,
+Bolivia,Toll-Free,Y,N,N,N,N,N,N/A,N,AMER,,,
+Bosnia And Herzegovina,Local,Y,Y,Y,N,N,N,N,N,EMEA,,,
+Bosnia And Herzegovina,National,Y,N,Y,N,N,N,N,N,EMEA,,,
+Bosnia And Herzegovina,Toll-Free,Y,N,N,N,N,N,N/A,N,EMEA,,,
+Botswana,Toll-Free,Y,N,N,N,N,N,N/A,N,EMEA,,,"National number format: 00 269 800 XXXX XXX . PLEASE NOTE: The number will be from the numberplan of Comoros (+269, not +267), as Botswana does not have a numberplan that offers workable tollfree numbers, this is a common practise for local companies."
+Brazil,Local,Y,Y,Y,Y,Y,Y,Y,N,AMER,,A,
+Brazil,Mobile,Y,Y,Y,N,N,N,N/A,Y,AMER,,A,
+Brazil,Toll-Free,Y,N,N,N,N,Y,N/A,N,AMER,,A,
+Brazil,National (3003/4004),Y,N,N,N,N,N,N,N,AMER,,,
+British Virgin Islands,Toll-Free,Y,N,N,N,N,N,N/A,N,AMER,,,"National number format 1 8XX XXX XXXX Numbers can also be called for free from Anguilla, Antigua, Barbados, Cayman Islands, Dominica, Grenada, Jamaica, St Kitts & Nevis, St Lucia, St Vincent and Turk & Caicos. International access is not guaranteed."
+Brunei,Toll-Free,Y,N,N,N,N,N,N/A,N,APAC,,,National number format: 801 4XXX. International access is not guaranteed.
+Bulgaria,Local,Y,Y,Y,N,N,N,N,N,EMEA,,B,"Only 1 reseller allowed. Will become ""A"" when we have our own numbers implemented"
+Bulgaria,Toll-Free,Y,N,N,N,N,N,N/A,N,EMEA,,B,"Only 1 reseller allowed. Will become ""A"" when we have our own numbers implemented"
+Burkina Faso,Local,Y,N,N,N,N,N,N,N,EMEA,,,
+Myanmar,Local,Y,N,N,N,N,N,N,N,APAC,,,
+Myanmar,Toll-Free,Y,N,N,N,N,Y,N/A,N,APAC,,,
+Cambodia,Toll-Free,Y,N,N,N,N,N,N/A,N,APAC,,,National number format : 01800 XXX XXX
+Cameroon,Local,Y,Y,Y,N,N,N,N,N,EMEA,,B/C,
+Canada,Local,Y,Y,Y,Y,Y,Y,Y,Y,AMER,,A,
+Canada,Mobile,Y,Y,Y,Y,Y,Y,Y,N,AMER,,A,
+Canada,Toll-Free,Y,Y,N,Y,Y,Y,Y,Y,AMER,,A,
+Cayman Islands,Local,Y,N,Y,N,N,N,N,N,AMER,,,National number-format: 1345 XXX XXXX.
+Cayman Islands,Toll-Free,Y,N,N,N,N,N,N/A,N,AMER,,,National number format 1 8XX XXX XXXX. International access is not guaranteed.
+Chile,Local,Y,Y,Y,Y,N,Y,Y,Y,AMER,,A,Only prefix 56-2 (Santiago) is SMS capable. (we are applying for our license)
+Chile,National,Y,Y,Y,N,N,N,N,N,AMER,,A,(we are applying for our license)
+Chile,Shared Cost,Y,N,N,N,N,N,N/A,N,AMER,,A,(we are applying for our license)
+Chile,Toll-Free,Y,N,N,N,N,Y,N/A,N,AMER,,A,(we are applying for our license)
+China,Local,Y,Y,Y,N,N,N,N,N,APAC,,B,Fixed number portability is not yet implemented in China
+China,Shared Cost,Y,N,N,N,N,N,N/A,N,APAC,,B,
+Colombia,Local,Y,Y,Y,Y,Y,N,Y,N,AMER,,A,Fixed number portability is not yet implemented in Colombia.
+Colombia,Mobile,Y,N,Y,N,N,N,N/A,N,AMER,,A,
+Colombia,Toll-Free,Y,N,N,N,N,N,N/A,N,AMER,,A,
+Costa Rica,National,Y,Y,Y,Y,Y,TBC,Y,N,AMER,,B,(we are applying for our license)
+Costa Rica,Toll-Free,Y,N,N,N,N,N,N/A,N,AMER,,A,"National number format: 0 800 XXX XXXX. Numbers that do not receive calls for more than 3 consecutive months will cost and additional US $ 25 per month, until traffic is again generated. International access is not guaranteed."
+Croatia,Local,Y,Y,Y,Y,Y,Y,Y,N,EMEA,,A,Full national coverage with our own numbers
+Croatia,Toll-Free,Y,N,N,N,N,Y,N/A,N,EMEA,,A,
+Cyprus,Local,Y,Y,Y,N,N,Y,N,N,EMEA,,A,
+Cyprus,National,Y,N,Y,N,N,N,N,N,EMEA,,,
+Cyprus,Toll-Free,Y,N,N,N,N,Y,N/A,N,EMEA,,A,
+Czech Republic,Local,Y,Y,Y,Y,Y,Y,Y,N,EMEA,,A,
+Czech Republic,Toll-Free,Y,N,N,N,Y,Y,N/A,N,EMEA,,A,
+Democratic Republic of Congo - DRC,Mobile,Y,Y,N,N,N,N,N/A,N,EMEA,,B/C,
+Denmark,Local,Y,Y,Y,Y,Y,Y,Y,N,EMEA,,A,"Only 1 geographic number range in Denmark, so all numbers are national"
+Denmark,Mobile,Y,N,Coming Soon,N,N,N,N/A,N,EMEA,,A,
+Denmark,Toll-Free,Y,N,N,N,Y,Y,N/A,N,EMEA,,A,
+Dominica,Toll-Free,Y,N,N,N,N,N,N/A,N,AMER,,,National number format 1 8XX XXX XXXX. International access is not guaranteed.
+Dominican Republic,Local,Y,Y,Y,Y,Y,Y,Y,N,AMER,,,
+Dominican Republic,Toll-Free,Y,N,N,N,N,N,N/A,N,AMER,,,
+Ecuador,Mobile,Y,Y,,N,N,N,N,N,AMER,,,
+Ecuador,Toll-Free,Y,N,N,N,N,N,N/A,N,AMER,,A,(We are applying for out license)
+Egypt,Toll-Free,Y,N,N,N,N,N,N/A,N,EMEA,,,Numbers cannot be assigned to companies doing business in Egypt. National number format: 0 800 XXX XXXX. Minimum contract duration is 6 month. International access is not guaranteed.
+El Salvador,Local,Y,Y,Y,Y,Y,Y,Y,N,AMER,,,
+El Salvador,Toll-Free,Y,N,N,N,N,Y,N/A,N,AMER,,,"National number format: 800 XXXX / 800 XXXX XXXX. When ordering the following needs to be delivered. 
+ 
+ Company's name, Type of Business, Purpose of FF service, Web page address, Postal Address, Contact Person, Phone number. ITFS services only accessible from Telefonica's network. The Local Operator activates first the fixed access and once the this is done succesfull, they request activation to mobile operators."
+Estonia,Local,Y,Y,Y,Y,Y,Y,Y,N,EMEA,,B,"Only 1 reseller allowed. Will become ""A"" when we have our own numbers implemented"
+Estonia,Toll-Free,Y,N,N,N,Y,Y,N/A,N,EMEA,,B,"Only 1 reseller allowed. Will become ""A"" when we have our own numbers implemented"
+Ethiopia,Toll-Free,Y,N,N,N,N,N,N/A,N,EMEA,,,Dialing format: 800-XX-XXXX. The service can be terminated if there is no traffic generated over a 6 months period.
+Finland,Local,Y,Y,Y,Y,Y,Y,Y,N,EMEA,,A,All numbers can be used nationaly
+Finland,Mobile,Y,Y,Y,N,N,N,N/A,Y,EMEA,,A,
+Finland,National,Y,Y,Y,Y,Y,Y,Y,N,EMEA,,A,
+Finland,Toll-Free,Y,N,N,N,Y,Y,N/A,N,EMEA,,A,
+France,Local,Y,Y,Y,Y,Y,Y,Y,N,EMEA,,B,"From 01/01/2023 Resselling not allowed, geographic boundaries will dissapear and a number can be used all over the country"
+France,National,Y,Y,Y,Y,Y,Y,Y,N,EMEA,,B,Reselling not allowed. We have our own 09 number range
+France,Toll-Free,Y,N,N,N,Y,Y,N/A,N,EMEA,,B,Reselling not allowed. International inbound reach not guaranteed
+French Guiana,Toll-Free,Y,N,N,N,N,N,N/A,N,AMER,,C,National number format: 0 800 XXX XXX French Guiana has the same numberplan as France. International access is not guaranteed.
+Georgia,Local,Y,Y,N,N,N,N,N,N,EMEA,,A,
+Georgia,National,Y,Y,N,N,N,N,N,N,EMEA,,A,
+Georgia,Toll-Free,Y,N,N,N,N,N,N/A,N,EMEA,,A,
+Germany,Local,Y,Y,Y,Y,Y,Y*,Y,N,EMEA,,A,"Portability depends on having a porting agreement in place with the current operator.   Strict geographic definition: number can only be used on the corresponding geographic area. There are 5200 number area's, and Telnyx has numbers in all area's (most of our competitirs not).  Only one reseller between number range holder and final end-user.  "
+Germany,National,Y,Y,Y,Y,Y,Y*,Y,N,EMEA,,A,Portability depends on having a porting agreement in place with the current operator
+Germany,Toll-Free,Y,N,N,N,Y,Y*,N/A,N,EMEA,,A,"Individual Toll-free numbers need to be ported from Bnetza, we can't have numbers ""in stock"""
+Ghana,National,Y,Y,,N,N,N,N,N,EMEA,,,
+Ghana,Mobile,Y,N,Y,N,N,N,N/A,N,EMEA,,,
+Greece,Local,Y,Y,Y,Y,Y,Y,Y,N,EMEA,,A,1 Reseller in the middle.   
+Greece,Toll-Free,Y,N,N,N,Y,N,N/A,N,EMEA,,A,1 Reseller in the middle.   
+Grenada,Local,Y,N,Y,N,N,N,N,N,AMER,,,National number-format: 1473 XXX XXXX.
+Grenada,Toll-Free,Y,N,N,N,N,N,N/A,N,AMER,,,National number format 1 8XX XXX XXXX. International access is not guaranteed.
+Guadeloupe,Toll-Free,Y,N,N,N,N,N,N/A,N,AMER,,,National number format: 0800 XXX XXX. International access is not guaranteed.
+Guam,Toll-Free,Y,N,N,N,N,N,N,N,APAC,,,
+Guatemala,Local,Y,Y,N,Y,N,N,N,N,AMER,,,A-Leg True CLI not guaranteed in international inbounds
+Honduras,Local,Y,Y,N,N,N,N,N,N,AMER,,,
+Honduras,Toll-Free,Y,N,N,N,N,N,N/A,N,AMER,,,International access is not guaranteed.
+Hong Kong,National,Y,N,Y,N,Y,N,N,N,APAC,,B,"Will become ""A"" when we have our license. (application ongoing)  Regulator will verify if we already sell number ""illegaly"""
+Hong Kong,Toll-Free,Y,N,N,N,N,N,N/A,N,APAC,,B,"Will become ""A"" when we have our license. (application ongoing)  Regulator will verify if we already sell number ""illegaly"""
+Hungary,Local,Y,Y,Y,Y,Y,Y,Y,N,EMEA,,A,We have full coverage with our own number ranges
+Hungary,National,Y,Y,Y,Y,Y,Y,Y,N,EMEA,,A,
+Hungary,Toll-Free,Y,N,N,N,Y,Y,N/A,N,EMEA,,A,
+Iceland,Local,Y,N,Y,N,Y,N,N,N,EMEA,,A,
+Iceland,Toll-Free,Y,N,N,N,N,N,N/A,N,EMEA,,A,
+Indonesia,Local,Y,Y,N,N,N,N,N,N,APAC,,B/C,
+Indonesia,Toll-Free,Y,N,N,N,N,N,N/A,N,APAC,,,
+Ireland,Local,Y,Y,Y,Y,Y,Y,Y,N,EMEA,,A,
+Ireland,National,Y,Y,Y,Y,Y,Y,Y,N,EMEA,,A,"Cannot hold inventory, numbers must be acquired from Comreg and ported to Telnyx"
+Ireland,Toll-Free,Y,N,N,N,Y,Y,N/A,N,EMEA,,A,"Cannot hold inventory, numbers must be acquired from Comreg and ported to Telnyx"
+Israel,Local,Y,Y,N,Y,Y,N,N,N,EMEA,,,
+Israel,Mobile,Y,N,Y,N,Y,N,N/A,N,EMEA,,,
+Israel,National,Y,N,Y,N,N,N,N,N,EMEA,,,
+Israel,Toll-Free,Y,N,N,N,N,N,N/A,N,EMEA,,,
+Italy,Local,Y,Y,Y,Y,Y,Y,Y,N,EMEA,,A/C,All resellers must be licensed.  The regulator is verifying this 
+Italy,Toll-Free,Y,N,N,N,Y,Y,N/A,N,EMEA,,A/C,All resellers must be licensed.  The regulator is verifying this 
+Ivory Coast,Local,Y,N,N,N,N,N,N,N,EMEA,,,
+Jamaica,Local,Y,N,Y,N,N,Y,N,N,EMEA,,,
+Jamaica,Toll-Free,Y,N,N,N,N,N,N/A,N,EMEA,,,"National number format : 1 8XX XXX XXXX. Numbers can also be called for free from Anguilla, Antigua, Barbados, British Virgin Island, Cayman Islands, Dominica, Grenada, St Kitts & Nevis, St Lucia, St Vincent and Turk & Caicos. International access is not guaranteed."
+Japan,National,Y,Y,Y,N,N,N,N,N,APAC,,A,"The number does not support Toll-Free calling.  We will apply for the license. Strict usage restrictions (local address), verified by the regulator "
+Japan,Toll-Free,Y,N,N,N,N,N,N/A,N,APAC,,A,
+Jordan,Local,Y,N,N,N,N,N,N,N,EMEA,,,
+Jordan,Toll-Free,Y,N,N,N,N,N,N/A,N,EMEA,,,
+Kazakhstan,National,Y,Y,,N,N,N,N,N,APAC,,,
+Kazakhstan,Mobile,Y,Y,,N,N,N,N,N,APAC,,,
+Kenya,Local,Y,Y,Y,N,N,N,N,N,EMEA,,B/C,
+Kenya,Mobile,Y,Y,Y,N,N,N,N,N,EMEA,,B/C,
+Kenya,Toll-Free,Y,N,N,N,N,N,N/A,N,EMEA,,,International access is not guaranteed.
+Kuwait,Local,Y,N,N,N,N,N,N,N,EMEA,,,Numbers can only be rented in blocks of 10 numbers each. National number-format: 2XXX XXXX
+Latvia,Local,Y,Y,Y,Y,Y,Y,Y,N,EMEA,,B,"Only 1 reseller allowed. Will become ""A"" when we have our own numbers implemented"
+Latvia,Toll-Free,Y,N,N,N,Y,N,N/A,N,EMEA,,B,"Only 1 reseller allowed. Will become ""A"" when we have our own numbers implemented"
+Lithuania,Local,Y,Y,Y,Y,Y,Y,Y,N,EMEA,,A,
+Lithuania,Mobile,Y,N,Y,N,Y,N,N/A,N,EMEA,,A,
+Lithuania,National,Y,Y,Y,Y,Y,Y,Y,N,EMEA,,A,
+Lithuania,Toll-Free,Y,N,N,N,Y,Y,N/A,N,EMEA,,A,
+Luxembourg,Local,Y,Y,Y,Y,Y,Y,Y,N,EMEA,,A,"Only 1 reseller between number range holder (=Telnyx) and end-user. The ""reseller"" must be licensed. The regulator is verifying this at regular times. It is also important that all outgoing calls made with Telnyx numbers are routed via Telnyx"
+Luxembourg,National,Y,Y,Y,Y,Y,Y,Y,N,EMEA,,A,"Only 1 reseller between number range holder (=Telnyx) and end-user. The ""reseller"" must be licensed. The regulator is verifying this at regular times. It is also important that all outgoing calls made with Telnyx numbers are routed via Telnyx"
+Luxembourg,Toll-Free,Y,N,N,N,Y,Y,N/A,N,EMEA,,A,
+Macau,Mobile,Y,N,N,N,N,N,N/A,N,APAC,,,
+Republic of North Macedonia,Local,Y,Y,Y,N,N,N,N,N,EMEA,,,Forbidden content: gambling.
+Republic of North Macedonia,Toll-Free,Y,N,N,N,N,N,N/A,N,,,,International access is not guaranteed.
+Malaysia,Local,Y,Y,Y,Y,N,N,N,N,APAC,,B/C,International reachability is not guaranteed.
+Malaysia,Mobile,Y,Y,Y,N,N,N,N,N,APAC,,B/C,
+Malaysia,National,Y,Y,Y,N,N,N,N,N,APAC,,,
+Malaysia,Toll-Free,Y,N,N,N,N,N,N/A,N,APAC,,,National number format: 1 800 8XX XXXX An airtime charge to the caller will apply for mobile calls. The mobile operators will charge the caller an airtime charge.
+Malta,National,Y,N,Y,N,N,Y,N,N,EMEA,,B,"Reselling is not allowed, without approval of the regulator.  Number allocation is only to network providers"
+Malta,Toll-Free,Y,N,N,N,N,N,N/A,N,EMEA,,A,National number format: 8006 XXXX / 8007 XXXX
+Martinique,Toll-Free,Y,N,N,N,N,N,N/A,N,AMER,,,National number format: 0800 XXX XXX. International access is not guaranteed.
+Mauritius,Toll-Free,Y,N,N,N,N,N,N/A,N,EMEA,,,
+Mayotte,Toll-Free,Y,N,N,N,N,N,N/A,N,EMEA,,,National number format: 0800 XXX XXX. International access is not guaranteed.
+Mexico,Local,Y,Y,Y,Y,Y,Y,Y,N,AMER,,A,
+Mexico,Toll-Free,Y,N,N,N,N,Y,N/A,N,AMER,,A,
+Mexico,Mobile,Y,Y,Y,N,Y,Y,N,Y,AMER,,,
+Moldova,Toll-Free,Y,N,N,N,N,N,N/A,N,EMEA,,,"National number format: 0 800 XXXXX You need to reach 5,000 minutes per year traffic on each of the ITFS ordered. Otherwise, a yearly fee applies.
+ Yearly Fee (if < 5000 minutes/year/number) = 100 EUR"
+Monaco,Toll-Free,Y,N,N,N,N,N,N/A,N,EMEA,,,
+Montenegro,Local,Y,N,N,N,N,N,N,N,EMEA,,,
+Morocco,Local,Y,N,N,N,N,N,N,N,EMEA,,B,Not sure this is legal
+Morocco,Toll-Free,Y,N,N,N,N,N,N/A,N,EMEA,,,National number format : 0-800-XXX-XXX. International access is not guaranteed.
+Mozambique,Mobile,Y,Y,Y,N,N,N,N,N,EMEA,,,
+Nepal,Toll-Free,Y,N,N,N,N,N,N/A,N,APAC,,,National number format: 1 800 XXX XXXX Routings MUST be pre-programmed when ordering. When the routing is not pre-programmed and active the order cannot be started.
+Netherlands,Local,Y,Y,Y,Y,Y,Y,Y,N,EMEA,,A,
+Netherlands,Mobile,Y,Y,Y,N,Y,Y,N/A,Y,EMEA,,A,"Only the M2M (Machine to Machine) 097 range is available and SMS Capable. ""Normal"" mobile numbers are not allowed. True CLI is not guaranteed in outbound calls.
+06 numbers (""regular"" mobile are NOT supported, and only allowed for SIM cards."
+Netherlands,National,Y,Y,Y,Y,Y,Y,Y,N,EMEA,,A,
+Netherlands,Toll-Free,Y,N,N,N,Y,Y,N/A,N,EMEA,,A,"End user must obtain the toll free number directly from the regulator (Or Telnyx can, with a PoA)"
+New Zealand,Local,Y,Y,Y,Y,Y,Y,Y,N,APAC,,A,
+New Zealand,Toll-Free,Y,N,N,N,N,Y,N/A,N,APAC,,A,
+Nicaragua,Mobile,Y,Y,Y,N,N,N,N/A,N,AMER,,B,
+Nigeria,National,Y,Y,N,N,N,N,N/A,N,EMEA,,B/C,
+Nigeria,Toll-Free,Y,N,N,N,N,N,N/A,N,EMEA,,B/C,National number format: 7080XXXX
+Norway,Local,Y,Y,Y,Y,Y,Y,Y,N,EMEA,,A/C,Resellers must be licensed. Regulator is verifying at regular times
+Norway,Toll-Free,Y,N,N,N,Y,Y,N/A,N,EMEA,,A/C,Resellers must be licensed. Regulator is verifying at regular times
+Oman,Toll-Free,Y,N,N,N,N,N,N/A,N,EMEA,,,Callback services are not permitted
+Pakistan,Local,Y,Y,Y,N,N,N,N,N,APAC,,B,
+Pakistan,Toll-Free,Y,N,N,N,N,N,N/A,N,APAC,,,
+Panama,Local,Y,Y,Y,Y,Y,Y,Y,N,AMER,,,
+Panama,Toll-Free,Y,N,N,N,N,N,N/A,N,AMER,,,
+Papua New Guinea,Toll-Free,Y,N,N,N,N,N,N/A,N,APAC,,,
+Paraguay,Local,Y,N,Y,N,N,N,N,N,AMER,,,
+Paraguay,Toll-Free,Y,N,N,N,N,N,N/A,N,AMER,,,
+Peru,Local,Y,Y,Y,Y,Y,Y,Y,N,AMER,,A,(we are applying for our license)
+Peru,Shared Cost,Y,N,N,N,N,N,N/A,N,AMER,,A,(we are applying for our license)
+Peru,Toll-Free,Y,N,N,N,N,N,N/A,N,AMER,,A,(we are applying for our license)
+Philippines,Local,Y,Y,Y,Y,N,N,N,N,APAC,,B/C,
+Philippines,Mobile,Y,Y,Y,Y,N,N,N,N,APAC,,B/C,
+Philippines,Toll-Free,Y,N,N,N,N,N,N/A,N,APAC,,B,
+Poland,Local,Y,Y,Y,Y,Y,Y,Y,N,EMEA,,A/B,"In theory, reselling of numbers is not allowed. We need to sub-allocate numbers to our resellers (must be licensed, so operators), and inform the regulator withing 14 days"
+Poland,Mobile,Y,Y,Y,N,Y,N,N/A,Y,EMEA,,B,"Portability depends on having a porting agreement in place with the current operator.  In theory, reselling of numbers is not allowed. We need to sub-allocate numbers to our resellers (must be licensed, so operators), and inform the regulator withing 14 days, but we don't have our own mobile numbers yet"
+Poland,Toll-Free,Y,N,N,N,Y,Y,N/A,N,EMEA,,A,
+Portugal,Local,Y,Y,Y,Y,Y,Y,Y,N,EMEA,,B,Only 1 reseller allowed. We don't have our own numbers yet
+Portugal,National,Y,Y,Y,Y,Y,Y,Y,N,EMEA,,B,Only 1 reseller allowed. We don't have our own numbers yet
+Portugal,Toll-Free,Y,N,N,N,Y,Y,N/A,N,EMEA,,B,Only 1 reseller allowed. We don't have our own numbers yet
+Puerto Rico,Local,Y,Y,Y,N,N,N,N/A,Y,AMER,,,
+Puerto Rico,Toll-Free,Y,N,N,N,N,N,N/A,N,AMER,,,National numberformat : 866 XXX XXXX
+Qatar,Toll-Free,Y,N,N,N,N,N,N/A,N,EMEA,,,"National number format: 00800 XXX XXX Routings MUST be pre-programmed when ordering. When the routing is not pre-programmed and active the order cannot be started. Qatar ITFS is to be dialed using “ 00 “, this means customer should enable international services."
+Reunion,Toll-Free,Y,N,N,N,N,N,N/A,N,EMEA,,C,National number format: 0805 XXX XXX. International access is not guaranteed.
+Romania,Local,Y,Y,Y,Y,Y,Y,Y,N,EMEA,,A,"Only 1 reseller allowed. Will become ""A"" when we have our own numbers implemented"
+Romania,National,Y,Y,Y,Y,Y,Y,Y,N,EMEA,,A,"Only 1 reseller allowed. Will become ""A"" when we have our own numbers implemented"
+Romania,Toll-Free,Y,N,N,N,N,Y,N/A,N,EMEA,,A,"Only 1 reseller allowed. Will become ""A"" when we have our own numbers implemented"
+Rwanda,Local,Y,Y,N,N,N,N,N/A,N,EMEA,,B/C,
+Saudi Arabia,Local,Y,Y,Y,N,N,N,N/A,N,EMEA,,B/C,
+Saudi Arabia,Toll-Free,Y,N,N,N,N,N,N/A,N,EMEA,,B/C,Reachable from all national fixed and mobile networks.
+Serbia,Local,Y,Y,N,N,N,Y,N,N,EMEA,,,
+Serbia,Toll-Free,Y,N,N,N,N,N,N/A,N,EMEA,,,
+Seychelles,Local,Y,N,Y,N,N,N,N,N,EMEA,,,
+Singapore,Local,Y,Y,Y,Y,Y,Y,Y,N,APAC,,A,
+Singapore,National,Y,Y,Y,N,Y,N,N/A,N,APAC,,,"Beginning 30 July, all calls beginning with +656 that are originated outside the country will be blocked. "
+Singapore,Toll-Free,Y,N,N,N,N,N,N/A,N,APAC,,A,
+Slovakia,Local,Y,Y,Y,Y,Y,Y,Y,N,EMEA,,B,"Only 1 reseller allowed. Will become ""A"" when we have our own numbers implemented"
+Slovakia,Toll-Free,Y,N,N,N,N,Y,N/A,N,EMEA,,B,"Only 1 reseller allowed. Will become ""A"" when we have our own numbers implemented"
+Slovenia,Local,Y,Y,Y,Y,Y,Y,Y,N,EMEA,,B,"Only 1 reseller allowed. Will become ""A"" when we have our own numbers implemented"
+Slovenia,National,Y,Y,Y,Y,Y,Y,Y,N,EMEA,,B,"Only 1 reseller allowed. Will become ""A"" when we have our own numbers implemented"
+Slovenia,Toll-Free,Y,N,N,N,Y,Y,N/A,N,EMEA,,B,"Only 1 reseller allowed. Will become ""A"" when we have our own numbers implemented"
+South Africa,Local,Y,Y,Y,Y,Y,Y,Y,N,EMEA,,A,
+South Africa,National,Y,Y,Y,Y,Y,Y,Y,N,EMEA,,A,
+South Africa,Mobile,Y,Y,Y,N,N,N,N,Y,EMEA,,A,
+South Africa,Toll-Free,Y,N,N,N,N,Y,N/A,N,EMEA,,A,
+South Korea,Local,Y,Y,,N,N,N,N,N,APAC,,A,
+South Korea,National,Y,Y,,N,N,N,N,N,APAC,,A,
+South Korea,Toll-Free,Y,N,N,N,N,N,N/A,N,APAC,,,
+Spain,Local,Y,Y,Y,Y,Y,Y,Y,N,EMEA,,A,
+Spain,National,Y,Y,N,N,Y,Y,N,N,EMEA,,A,
+Spain,Toll-Free,Y,N,N,N,N,Y,N/A,N,EMEA,,A,
+Spain,Shared Cost,Y,N,N,N,N,Y,N,N,EMEA,,,
+Sri Lanka,Mobile,Y,N,N,N,N,N,N/A,N,APAC,,,"An LOI is needed: 
+ - Company profile, activities, website 
+ - Service description 
+ - Statement that the number will not be used for Callback, CallingCards or Third Country Calling 
+ - Statement of awareness of the restrictions and will respect them. 
+ 
+ Routings must be pre-programmed when ordering. When the routing is not pre-programmed and active the order cannot be started."
+Sri Lanka,Toll-Free,Y,N,N,N,N,N,N/A,N,APAC,,,"National number format: 011 2 xxx xxx A call to the number is only free of costs when the call originates in the network of SLT, calling from other networks generate airtime costs. In Sri Lanka local operators use geographical numbers to offer toll-free services."
+Sweden,Local,Y,Y,Y,Y,Y,Y,Y,N,EMEA,,A,
+Sweden,Mobile,Y,Y,Y,N,N,N,N/A,Y,EMEA,,A,
+Sweden,National,Y,Y,Y,Y,Y,Y,Y,N,EMEA,,A,
+Sweden,Toll-Free,Y,N,N,N,Y,Y,N/A,N,EMEA,,A,
+Switzerland,Local,Y,Y,Y,Y,Y,Y,Y,N,EMEA,,A,We need to register each reseller in the database of the regulator (each reseller will be contacted by the regulator for a license)
+Switzerland,Toll-Free,Y,N,N,N,Y,Y,N/A,N,EMEA,,A,We need to register each reseller in the database of the regulator (each reseller will be contacted by the regulator for a license)
+Tanzania,Toll-Free,Y,N,N,N,N,N,N/A,N,EMEA,,, End-users/callers could be charged for calling these Toll-Free numbers
+Thailand,Local,Y,Y,Y,N,N,Y,N,N,APAC,,B/C,
+Thailand,Mobile,Y,Y,Y,N,N,Y,N/A,Y,APAC,,B/C,
+Thailand,National,Y,N,Y,N,N,N,N,N,APAC,,,
+Thailand,Toll-Free,Y,N,N,N,N,N,N/A,N,APAC,,,
+Trinidad and Tobago,Local,Y,N,Y,N,N,N,N,N,AMER,,,National number-format: 1868 XXX XXXX.
+Trinidad and Tobago,Toll-Free,Y,N,N,N,N,N,N/A,N,AMER,,,National numberformat : 1800 XXX XXXX. International access is not guaranteed.
+Turks and Caicos Islands,Toll-Free,Y,N,N,N,N,N,N/A,N,AMER,,,"National number format 1 8XX XXX XXXX Numbers can also be called for free from Anguilla, Antigua, Barbados, British Virgin Island, Cayman Islands, Dominica, Grenada, Jamaica, St Kitts & Nevis, St Lucia and St Vincent. International access is not guaranteed."
+U.S. Virgin Islands,Local,Y,Y,Y,Y,Y,Y,Y,N,LATAM,,,
+U.S. Virgin Islands,Toll-Free,Y,N,N,N,N,Y,N/A,Y,AMER,,,National number format: 1 8XX XXX XXXX. Routing must be pre-programmed when ordering. When the routing is not pre-programmed and active the order cannot be started.
+Uganda,Local,Y,N,N,N,N,N,N,N,EMEA,,,
+Uganda,National,Y,N,N,N,N,N,N,N,EMEA,,,
+Uganda,Toll-Free,Y,N,N,N,N,N,N/A,N,EMEA,,,Caller using a pre-paid contract may experience reachability restrictions which are applied by their local operator. International access is not guaranteed.
+Ukraine,Local,Y,N,Y,N,Y,N,N,N,EMEA,,,
+Ukraine,Mobile,Y,N,Y,N,Y,N,N/A,N,EMEA,,,
+Ukraine,Toll-Free,Y,N,N,N,N,N,N/A,N,EMEA,,,
+United Arab Emirates,Local,Y,Y,Y,N,N,N,N,N/A,EMEA,,B/C,TELEMARKETING / Fintech / Web development use cases are not allowed
+United Arab Emirates,Toll-Free,Y,N,N,N,N,N,N/A,N,EMEA,,,
+United Kingdom,Local,Y,Y,Y,Y,Y,Y*,Y,N,EMEA,,A,Portability depends on having a porting agreement in place with the current operator
+United Kingdom,Mobile,Y,Y,Y,N,Y,Y*,N/A,Y,EMEA,,A,Portability depends on having a porting agreement in place with the current operator
+United Kingdom,National,Y,Y,Y,Y,Y,Y*,Y,N,EMEA,,A,Portability depends on having a porting agreement in place with the current operator
+United Kingdom,Toll-Free,Y,N,N,N,Y,Y*,N/A,N,EMEA,,A,Portability depends on having a porting agreement in place with the current operator
+United States,Local,Y,Y,Y,Y,Y,Y,Y,Y,AMER,,A,
+United States,Mobile,Y,Y,Y,Y,Y,Y,Y,Y,AMER,,A,
+United States,Toll-Free,Y,N,N,N,Y,Y,N/A,Y,AMER,,A,
+Uruguay,Toll-Free,Y,N,N,N,N,N,N/A,N,AMER,,,
+Uzbekistan,Local,Y,Y,Y,N,N,N,N,N,APAC,,,
+Venezuela,Local,Y,N,Y,N,N,N,N,N,AMER,,,
+Venezuela,Toll-Free,Y,N,N,N,N,N,N/A,N,AMER,,,
+Vietnam,Local,Y,Y,Y,N,N,N,N,N,APAC,,B/C,
+Vietnam,Toll-Free,Y,N,N,N,N,N,N/A,N,APAC,,,"National number format: 120 32 XXX. You can complement the coverage by requesting additional numbers that are reachable from VIETTEL, MOBIFONE, and VNPT."
+Zambia,Mobile,Y,Y,N,N,N,N,N,N,EMEA,,B/C,
+Zimbabwe,Local,Y,N,N,N,N,N,N,N,EMEA,,,"Forbidden content: adult content, auto-dialing, and gambling."

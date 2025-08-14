@@ -8,6 +8,8 @@ from .tools.think_tool import think_tool
 from .tools.qualification_tool import qualification_tool  
 from .tools.transfer_tool import transfer_tool
 from .tools.knowledge_tool import knowledge_tool
+from .tools.response_validator import response_validator
+from .tools.global_coverage_tool import global_coverage_tool
 
 logger = logging.getLogger(__name__)
 
@@ -21,6 +23,7 @@ class QuinnAgent:
             model=model,
             temperature=0.1,  # Low temperature for consistent sales decisions
             max_tokens=1000,  # Reasonable limit for voice call responses
+            timeout=15,  # Voice call timeout optimization
         )
         
         # Initialize tools
@@ -28,14 +31,42 @@ class QuinnAgent:
             think_tool,
             qualification_tool,
             transfer_tool, 
-            knowledge_tool
+            knowledge_tool,
+            response_validator,
+            global_coverage_tool
         ]
         
-        # Create modern LangGraph agent (2025 best practice)
+        # Create modern LangGraph agent (2025 best practice)  
+        system_prompt = """You are Quinn, an AI sales assistant for Telnyx. You help qualify inbound sales calls and make intelligent routing decisions. Be concise and focused on voice call efficiency.
+
+CRITICAL: Before providing any response to the caller, you MUST use the response_validator tool to check your intended response against capability boundaries. Only send validated responses to callers.
+
+Validation Workflow:
+1. Formulate your response
+2. Call response_validator with your intended response and conversation context  
+3. If approved=True: Use the validated response
+4. If approved=False: Use the provided safe_response instead
+
+You can ONLY:
+- Look up customer info (Salesforce)
+- Provide basic Telnyx product information and starting prices
+- Check global coverage and number availability (using global_coverage_tool)
+- Score and qualify leads
+- Transfer calls to appropriate team members
+- Send background team notifications
+
+You CANNOT promise:
+- Emails, callbacks, or follow-ups
+- Specific pricing quotes or discounts (unless contract customer spending $1000+/month)
+- Technical implementations or account modifications
+- Access to external systems or detailed reports
+
+Always use response validation to ensure you stay within these boundaries."""
+
         self.agent = create_react_agent(
             model=self.llm,
             tools=self.tools,
-            prompt="You are Quinn, an AI sales assistant for Telnyx. You help qualify inbound sales calls and make intelligent routing decisions. Be concise and focused on voice call efficiency."
+            prompt=system_prompt
         )
     
     async def think_and_act(

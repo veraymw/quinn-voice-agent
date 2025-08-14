@@ -111,6 +111,35 @@ class ExtractedQualificationData(BaseModel):
     business_quality: BusinessQuality = Field(default_factory=BusinessQuality)
 
 
+class IntentClassification(BaseModel):
+    """Dynamic intent classification for conversation context"""
+    
+    primary_intent: Literal["sales", "support", "other"] = Field(
+        ...,
+        description="Primary intent detected from conversation"
+    )
+    
+    confidence: float = Field(
+        0.0, ge=0.0, le=1.0,
+        description="Confidence in intent classification"
+    )
+    
+    intent_reasoning: str = Field(
+        ...,
+        description="Why this intent was classified"
+    )
+    
+    context_shift: bool = Field(
+        False,
+        description="Whether intent changed from previous classification"
+    )
+    
+    supporting_evidence: List[str] = Field(
+        default_factory=list,
+        description="Evidence from conversation supporting this classification"
+    )
+
+
 class FollowUpQuestion(BaseModel):
     """Smart follow-up question when data is incomplete"""
     
@@ -136,7 +165,7 @@ class FollowUpQuestion(BaseModel):
 
 
 class QualificationDecision(BaseModel):
-    """Final qualification decision with intelligent routing"""
+    """Final qualification decision with intelligent routing and intent classification"""
     
     stage: Literal["SQL", "SSL", "DQ", "NEEDS_INFO"] = Field(
         ...,
@@ -151,6 +180,12 @@ class QualificationDecision(BaseModel):
     reasoning: str = Field(
         ...,
         description="Clear reasoning for the decision"
+    )
+    
+    # Intent classification (NEW - Dynamic intent detection)
+    intent_classification: IntentClassification = Field(
+        ...,
+        description="Dynamic intent classification for this interaction"
     )
     
     # Transfer routing
@@ -176,4 +211,10 @@ class QualificationDecision(BaseModel):
     extracted_data: ExtractedQualificationData = Field(
         ...,
         description="All extracted qualification data"
+    )
+    
+    # Routing guidance based on intent (NEW)
+    routing_guidance: Optional[str] = Field(
+        None,
+        description="Specific routing guidance based on intent classification"
     )
