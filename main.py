@@ -188,26 +188,12 @@ async def agent_think_and_act_endpoint(
                 error="Quinn agent not initialized"
             )
         
-        # Add timeout for voice call optimization
-        try:
-            result = await asyncio.wait_for(
-                quinn_agent.think_and_act(
-                    conversation_context=request.conversation_context,
-                    caller_info=request.caller_info,
-                    specific_query=request.specific_query
-                ),
-                timeout=25.0  # 20 second timeout
-            )
-        except asyncio.TimeoutError:
-            return TelnyxToolResponse(
-                success=False,
-                error="Agent reasoning timed out - please try a simpler query",
-                dynamic_variables={
-                    "qualification_level": "NEEDS_INFO",
-                    "should_transfer": False
-                },
-                meta={"execution_time_ms": 20000}
-            )
+        # Execute agent reasoning without timeout
+        result = await quinn_agent.think_and_act(
+            conversation_context=request.conversation_context,
+            caller_info=request.caller_info,
+            specific_query=request.specific_query
+        )
         
         # Extract dynamic variables from agent reasoning
         dynamic_variables = {}
