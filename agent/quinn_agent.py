@@ -6,7 +6,7 @@ import logging
 
 from .tools.think_tool import think_tool
 from .tools.qualification_tool import qualification_tool  
-from .tools.transfer_tool import transfer_tool
+
 from .tools.knowledge_tool import knowledge_tool
 from .tools.response_validator import response_validator
 from .tools.global_coverage_tool import global_coverage_tool
@@ -30,7 +30,6 @@ class QuinnAgent:
         self.tools = [
             think_tool,
             qualification_tool,
-            transfer_tool, 
             knowledge_tool,
             response_validator,
             global_coverage_tool
@@ -52,7 +51,6 @@ You can ONLY:
 - Provide basic Telnyx product information and starting prices
 - Check global coverage and number availability (using global_coverage_tool)
 - Score and qualify leads
-- Transfer calls to appropriate team members
 - Send background team notifications
 
 You CANNOT promise:
