@@ -29,3 +29,4 @@ python-multipart
 python-dotenv
 httpx
 aiohttp
+pandas
