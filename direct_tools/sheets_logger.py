@@ -118,12 +118,6 @@ class SheetsLogger:
             Status of the logging operation
         """
         try:
-            # Safety check for extremely large content (Google Sheets limit is 50k chars)
-            if input_summary and len(input_summary) > 45000:
-                logger.warning(f"Large input_summary: {len(input_summary)} chars (Google Sheets limit: 50k)")
-            if output_summary and len(output_summary) > 45000:
-                logger.warning(f"Large output_summary: {len(output_summary)} chars (Google Sheets limit: 50k)")
-            
             # Prepare row data
             row_data = [
                 datetime.now().isoformat(),
