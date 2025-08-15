@@ -265,7 +265,7 @@ async def agent_think_and_act_endpoint(
             conversation_id=request.conversation_id or "unknown",
             tool_used="agent_reasoning",
             input_summary=f"Query: {request.specific_query} | Context: {len(request.conversation_context)} chars",
-            output_summary=f"Decision: {result.get('decision', 'Unknown')[:100]}",
+            output_summary=f"Decision: {result.get('decision', 'Unknown')}",
             duration_ms=duration_ms,
             caller_info=request.caller_info
         )
@@ -429,7 +429,7 @@ async def validate_response_endpoint(
             log_activity_background,
             conversation_id=request.conversation_id or "unknown",
             tool_used="response_validator",
-            input_summary=f"Response: {request.intended_response[:100]}...",
+            input_summary=f"Response: {request.intended_response}",
             output_summary=f"Approved: {result.get('approved', False)}",
             duration_ms=duration_ms,
             status="success" if result.get('approved', False) else "blocked"

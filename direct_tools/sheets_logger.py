@@ -118,18 +118,24 @@ class SheetsLogger:
             Status of the logging operation
         """
         try:
+            # Safety check for extremely large content (Google Sheets limit is 50k chars)
+            if input_summary and len(input_summary) > 45000:
+                logger.warning(f"Large input_summary: {len(input_summary)} chars (Google Sheets limit: 50k)")
+            if output_summary and len(output_summary) > 45000:
+                logger.warning(f"Large output_summary: {len(output_summary)} chars (Google Sheets limit: 50k)")
+            
             # Prepare row data
             row_data = [
                 datetime.now().isoformat(),
                 conversation_id or "unknown",
                 tool_used,
-                input_summary[:500] if input_summary else "",  # Limit length
-                output_summary[:500] if output_summary else "",
+                input_summary if input_summary else "",  # No arbitrary limits - Google Sheets supports 50k chars
+                output_summary if output_summary else "",  # No arbitrary limits - capture complete decisions
                 duration_ms,
                 status,
-                error[:200] if error else "",  # Limit error length
+                error if error else "",  # Complete error messages
                 json.dumps(caller_info) if caller_info else "",
-                notes[:200] if notes else ""
+                notes if notes else ""
             ]
             
             # Log asynchronously
@@ -206,11 +212,11 @@ class SheetsLogger:
                 duration,
                 outcome,
                 transfer_target or "",
-                summary[:1000] if summary else "",  # Limit summary length
+                summary if summary else "",  # Complete call summaries
                 ", ".join(tools_used) if tools_used else "",
                 ae_name or "",
                 phone_number or "",
-                notes[:300] if notes else ""
+                notes if notes else ""
             ]
             
             # Log asynchronously
