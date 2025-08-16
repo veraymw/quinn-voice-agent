@@ -33,6 +33,8 @@ class AgentRequest(BaseModel):
     
     This is the central brain that handles knowledge queries, qualification
     scoring, and routing decisions using the LangChain agent system.
+    
+    Now includes Telnyx metadata.
     """
     conversation_context: str = Field(
         ..., 
@@ -46,10 +48,57 @@ class AgentRequest(BaseModel):
         None, 
         description="Salesforce lookup result - can be string or dict format"
     )
-    conversation_id: Optional[str] = Field(
-        None, 
-        description="Unique conversation identifier"
+    
+    # NEW: Telnyx metadata for background processing
+    call_control_id: Optional[str] = Field(
+        None,
+        description="Primary identifier for Telnyx Call Control API operations"
     )
+    assistant_id: Optional[str] = Field(
+        None,
+        description="Telnyx AI assistant identifier"
+    )
+    call_session_id: Optional[str] = Field(
+        None,
+        description="Telnyx call session identifier"
+    )
+    call_leg_id: Optional[str] = Field(
+        None,
+        description="Telnyx call leg identifier"
+    )
+    to: Optional[str] = Field(
+        None,
+        description="Target phone number"
+    )
+    from_number: Optional[str] = Field(
+        None,
+        alias="from",
+        description="Caller phone number (from is a Python keyword)"
+    )
+    telnyx_end_user_target: Optional[str] = Field(
+        None,
+        description="Caller's phone number (Telnyx format)"
+    )
+    telnyx_agent_target: Optional[str] = Field(
+        None,
+        description="Agent's phone number (Telnyx format)"
+    )
+    assistant_version_id: Optional[str] = Field(
+        None,
+        description="Version of the assistant being used"
+    )
+    
+    def get_call_control_id(self) -> Optional[str]:
+        """Get the primary identifier for sending results back to the call"""
+        return self.call_control_id
+    
+    def get_caller_phone(self) -> Optional[str]:
+        """Get the caller's phone number from available fields"""
+        return self.telnyx_end_user_target or self.from_number
+    
+    def has_required_metadata(self) -> bool:
+        """Check if we have the minimum metadata needed for background processing"""
+        return bool(self.call_control_id)
 
 
 class SlackNotificationRequest(BaseModel):
