@@ -40,17 +40,12 @@ class BusinessQuality(BaseModel):
 
 
 class ExtractedQualificationData(BaseModel):
-    """Core qualification data with confidence assessments"""
+    """Core qualification data for lead assessment"""
     
     # Budget information
     monthly_budget: Optional[int] = Field(
         None,
         description="Monthly budget in USD (use highest figure if range)"
-    )
-    
-    budget_confidence: Literal["high", "medium", "low", "none"] = Field(
-        "none",
-        description="Confidence in budget information"
     )
     
     budget_context: Optional[str] = Field(
@@ -69,11 +64,6 @@ class ExtractedQualificationData(BaseModel):
         description="Type of volume measurement"
     )
     
-    volume_confidence: Literal["high", "medium", "low", "none"] = Field(
-        "none",
-        description="Confidence in volume information"
-    )
-    
     # Additional qualifying metrics
     phone_numbers: Optional[int] = None
     countries: Optional[int] = None
@@ -90,11 +80,6 @@ class ExtractedQualificationData(BaseModel):
     current_provider: Optional[str] = Field(
         None,
         description="Current communications provider"
-    )
-    
-    ai_voice_interest: bool = Field(
-        False,
-        description="Specific interest in AI voice products"
     )
     
     urgency_signals: List[str] = Field(

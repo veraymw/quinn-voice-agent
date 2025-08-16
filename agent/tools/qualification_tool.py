@@ -21,7 +21,6 @@ This tool is used to generate the following JSON response:
     "monthly_volume": 50000,
     "volume_type": "SMS messages",
     "use_case": "Business SMS communications",
-    "ai_voice_interest": false,
     "current_provider": "Twilio"
   }
 }
@@ -82,6 +81,56 @@ class SmartQualificationEngine:
             "voice_countries": 5  # 5+ countries for voice/video
         }
     
+    def extract_qualification_data_fast(self, conversation_context: str, caller_info: dict) -> ExtractedQualificationData:
+        """
+        OPTIMIZED: Fast qualification data extraction only.
+        Simplified and faster than the full extraction method.
+        """
+        
+        system_prompt = """
+        You are Telnyx's expert qualification analyst. Extract qualification data efficiently.
+        
+        EXTRACT KEY DATA:
+        1. Budget information (monthly spending capacity in USD)
+        2. Volume requirements  
+        3. Use case and business context
+        4. Authority level and decision-making capability
+        5. Growth signals and company maturity
+        6. Current provider and urgency signals
+        
+        RULES:
+        - Be conservative - only extract explicitly mentioned information
+        - Convert to monthly figures (divide yearly by 12)
+        - Use HIGHEST figure when ranges given
+        - Focus on business-critical qualification factors only
+        """
+        
+        user_prompt = f"""
+        CONVERSATION: {conversation_context}
+        CALLER INFO: {json.dumps(caller_info, indent=1) if caller_info else 'None'}
+        
+        Extract qualification data efficiently.
+        """
+        
+        try:
+            extracted_data = self.client.chat.completions.create(
+                model="gpt-4o-mini",  # FAST: Optimized for data extraction
+                messages=[
+                    {"role": "system", "content": system_prompt},
+                    {"role": "user", "content": user_prompt}
+                ],
+                response_model=ExtractedQualificationData,
+                max_retries=1,  # Reduced retries for speed
+                temperature=0.0  # Consistent results
+            )
+            
+            logger.info(f"Fast extraction: Budget=${extracted_data.monthly_budget}, Volume={extracted_data.monthly_volume}")
+            return extracted_data
+            
+        except Exception as e:
+            logger.error(f"Error in fast extraction: {str(e)}")
+            return ExtractedQualificationData()  # Return fallback data
+    
     def extract_qualification_data(self, conversation_context: str, caller_info: dict) -> ExtractedQualificationData:
         """Extract comprehensive qualification data using Instructor"""
         
@@ -94,7 +143,7 @@ class SmartQualificationEngine:
         2. Convert all budget/volume to monthly figures (divide yearly by 12)
         3. Always use the HIGHEST figure when ranges are given
         4. Assess business quality based on growth signals, company maturity, use case sophistication
-        5. Note confidence levels - mark as "low" if information is vague or assumed
+        5. Extract clear information - focus on explicitly mentioned data
         
         BUSINESS QUALITY INDICATORS:
         - High: Enterprise companies, Fortune 500, funded startups with traction, established SaaS companies
@@ -130,13 +179,14 @@ class SmartQualificationEngine:
         
         try:
             extracted_data = self.client.chat.completions.create(
-                model="gpt-4o",
+                model="gpt-4o-mini",  # OPTIMIZED: Faster model for data extraction
                 messages=[
                     {"role": "system", "content": system_prompt},
                     {"role": "user", "content": user_prompt}
                 ],
                 response_model=ExtractedQualificationData,
-                max_retries=2
+                max_retries=1,  # Reduced retries for speed
+                temperature=0.0  # Consistent extraction
             )
             
             logger.info(f"Extracted data: Budget=${extracted_data.monthly_budget}, Volume={extracted_data.monthly_volume}, Quality={extracted_data.business_quality.quality_score}")
@@ -196,13 +246,14 @@ class SmartQualificationEngine:
         
         try:
             intent_classification = self.client.chat.completions.create(
-                model="gpt-4o",
+                model="gpt-4o-mini",  # FASTEST model for simple intent classification
                 messages=[
                     {"role": "system", "content": system_prompt},
                     {"role": "user", "content": user_prompt}
                 ],
                 response_model=IntentClassification,
-                max_retries=2
+                max_retries=1,  # Reduced retries for speed
+                temperature=0.0  # Consistent results
             )
             
             logger.info(f"Intent classified: {intent_classification.primary_intent} (confidence: {intent_classification.confidence:.2f})")
@@ -250,7 +301,6 @@ class SmartQualificationEngine:
            - SIM cards ≥ 10
            - Voice minutes ≥ 100,000/month
            - Calls ≥ 100,000/month
-           - AI voice interest (strategic priority)
            - High growth signals with enterprise potential
            
         2. SSL (Self-Service Lead) - Below SQL thresholds BUT:
@@ -274,7 +324,6 @@ class SmartQualificationEngine:
         (roughly [volume] or equivalent usage). If you're below that, 
         our self-service platform is the best way to get started immediately."
         
-        For AI voice prospects: Prioritize as SQL even with lower volumes.
         For high-quality businesses: Ask smart follow-up questions to qualify properly.
         
         THRESHOLDS: {json.dumps(self.sql_thresholds, indent=2)}
@@ -312,7 +361,8 @@ class SmartQualificationEngine:
                     {"role": "user", "content": user_prompt}
                 ],
                 response_model=QualificationDecision,
-                max_retries=2
+                max_retries=1,  # Reduced retries for speed
+                temperature=0.0  # Consistent decisions
             )
             
             # Manually set the intent classification since model might not include it
@@ -374,11 +424,11 @@ smart_qualification_engine = SmartQualificationEngine()
 @tool  
 def qualification_tool(conversation_context: str, caller_info: str = "{}") -> str:
     """
-    Qualify a lead based on conversation context and caller information.
+    OPTIMIZED: Qualify a lead based on conversation context and caller information.
     Returns qualification score, level, and routing recommendation.
     
-    Uses smart AI-driven qualification with Instructor for structured data extraction
-    and includes intelligent follow-up question generation when data is incomplete.
+    PERFORMANCE IMPROVEMENT: Reduces from 3 API calls to 2 by using fast data extraction
+    first, then existing decision logic (which includes intent classification).
     
     Args:
         conversation_context: Full conversation history and context
@@ -394,15 +444,14 @@ def qualification_tool(conversation_context: str, caller_info: str = "{}") -> st
         except json.JSONDecodeError:
             caller_data = {}
         
-        logger.info(f"Processing smart qualification for conversation length: {len(conversation_context)}")
         
-        # Extract comprehensive qualification data
-        extracted_data = smart_qualification_engine.extract_qualification_data(
+        # OPTIMIZED: Fast data extraction only (1 API call)
+        extracted_data = smart_qualification_engine.extract_qualification_data_fast(
             conversation_context, 
             caller_data
         )
         
-        # Make intelligent qualification decision with intent classification
+        # Make qualification decision 
         decision = smart_qualification_engine.make_qualification_decision(
             extracted_data,
             conversation_context,
@@ -439,12 +488,9 @@ def qualification_tool(conversation_context: str, caller_info: str = "{}") -> st
             # Detailed extracted data
             "extracted_data": {
                 "monthly_budget": extracted_data.monthly_budget,
-                "budget_confidence": extracted_data.budget_confidence,
                 "monthly_volume": extracted_data.monthly_volume,
                 "volume_type": extracted_data.volume_type,
-                "volume_confidence": extracted_data.volume_confidence,
                 "use_case": extracted_data.use_case,
-                "ai_voice_interest": extracted_data.ai_voice_interest,
                 "current_provider": extracted_data.current_provider,
                 "decision_authority": extracted_data.decision_authority,
                 "business_quality_score": extracted_data.business_quality.quality_score,
