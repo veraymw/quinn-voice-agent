@@ -64,7 +64,7 @@ class SmartQualificationEngine:
             raise ValueError("OPENAI_API_KEY environment variable is required")
         
         self.client = instructor.from_openai(
-            OpenAI(api_key=api_key, timeout=10)  # Faster timeout
+            OpenAI(api_key=api_key)
         )
         
         # Telnyx thresholds from Quinn Email system
