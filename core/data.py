@@ -21,9 +21,9 @@ class SalesforceRequest(BaseModel):
         ..., 
         description="Phone number to lookup in Salesforce from {{telnyx_end_user_target}}"
     )
-    conversation_id: Optional[str] = Field(
+    call_control_id: Optional[str] = Field(
         None, 
-        description="Unique conversation identifier from {{conversation_id}}"
+        description="Call control identifier from Telnyx for tracking and logging"
     )
 
 
