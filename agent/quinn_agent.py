@@ -22,8 +22,7 @@ class QuinnAgent:
             api_key=openai_api_key,
             model=model,
             temperature=0.1,  # Low temperature for consistent sales decisions
-            max_tokens=1000,  # Reasonable limit for voice call responses
-            timeout=15,  # Voice call timeout optimization
+            max_tokens=1000,  # Reasonable limit for voice call responses # Voice call timeout optimization
         )
         
         # Initialize tools
