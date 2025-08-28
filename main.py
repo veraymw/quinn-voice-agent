@@ -427,7 +427,7 @@ async def validate_response_endpoint(
         duration_ms = int((datetime.now() - start_time).total_seconds() * 1000)
         background_tasks.add_task(
             log_activity_background,
-            conversation_id=request.conversation_id or "unknown",
+            call_control_id=request.conversation_id or "unknown",
             tool_used="response_validator",
             input_summary=f"Response: {request.intended_response}",
             output_summary=f"Approved: {result.get('approved', False)}",
