@@ -20,6 +20,7 @@ from core.data import (
     SlackNotificationRequest,
     ActivityLogRequest,
     ResponseValidationRequest,
+    SMSBookingRequest,
     TelnyxToolResponse
 )
 
@@ -460,6 +461,154 @@ async def validate_response_endpoint(
         return TelnyxToolResponse(
             success=False,
             error=str(e),
+            meta={"execution_time_ms": duration_ms}
+        )
+
+
+# SMS Booking endpoint (Direct tool)
+@app.post("/tools/send-booking-sms", response_model=TelnyxToolResponse)
+async def send_booking_sms_endpoint(
+    request: SMSBookingRequest,
+    background_tasks: BackgroundTasks
+) -> TelnyxToolResponse:
+    """Send booking link SMS to qualified SQL prospects during calls"""
+    start_time = datetime.now()
+    
+    try:
+        # Get Telnyx API key from environment
+        import os
+        telnyx_api_key = os.getenv("TELNYX_API_KEY")
+        if not telnyx_api_key:
+            return TelnyxToolResponse(
+                success=False,
+                error="Telnyx API key not configured",
+                dynamic_variables={"sms_sent": "false"}
+            )
+        
+        # Your Telnyx phone number (replace with your actual number)
+        from_number = "+18882755156"  # Replace with your actual Telnyx number
+        
+        # Create personalized booking links based on region
+        if request.region and request.region.lower() == "europe":
+            booking_link = "https://calendly.com/telnyx-quinn/emea"
+        else:
+            booking_link = "https://calendly.com/telnyx-quinn/amer"  # Americas/Default
+        
+        # Create personalized SMS message
+        if request.first_name:
+            greeting = f"Hi {request.first_name}!"
+        else:
+            greeting = "Hi there!"
+        
+        company_mention = f" from {request.company}" if request.company else ""
+        
+        message_text = f"{greeting} Thanks for your interest in Telnyx. Here's your personalized booking link to schedule a demo: {booking_link}"
+        
+        # SMS payload for Telnyx API
+        sms_payload = {
+            "from": from_number,
+            "to": request.phone_number,
+            "text": message_text
+        }
+        
+        headers = {
+            "Content-Type": "application/json",
+            "Authorization": f"Bearer {telnyx_api_key}"
+        }
+        
+        # Send SMS via Telnyx API
+        import httpx
+        async with httpx.AsyncClient() as client:
+            response = await client.post(
+                "https://api.telnyx.com/v2/messages",
+                json=sms_payload,
+                headers=headers,
+                timeout=30
+            )
+        
+        if response.status_code in [200, 201]:
+            sms_response = response.json()
+            sms_id = sms_response.get("data", {}).get("id")
+            
+            # Log activity in background
+            duration_ms = int((datetime.now() - start_time).total_seconds() * 1000)
+            background_tasks.add_task(
+                log_activity_background,
+                call_control_id=request.call_control_id,
+                tool_used="send_booking_sms",
+                input_summary=f"SMS to {request.phone_number} ({request.region or 'Americas'})",
+                output_summary=f"Booking link sent successfully (ID: {sms_id})",
+                duration_ms=duration_ms,
+                caller_info={
+                    "phone": request.phone_number,
+                    "name": f"{request.first_name or ''} {request.last_name or ''}".strip(),
+                    "company": request.company,
+                    "region": request.region,
+                    "qualification": request.qualification_level,
+                    "reason": request.qualification_reason
+                }
+            )
+            
+            return TelnyxToolResponse(
+                success=True,
+                data={
+                    "message": "Booking SMS sent successfully",
+                    "sms_id": sms_id,
+                    "recipient": request.phone_number,
+                    "booking_link": booking_link,
+                    "region": request.region or "Americas"
+                },
+                dynamic_variables={
+                    "sms_sent": "true",
+                    "booking_link_shared": "true",
+                    "sms_timestamp": datetime.now().isoformat(),
+                    "booking_region": request.region or "AMER"
+                },
+                meta={"execution_time_ms": duration_ms}
+            )
+        else:
+            error_msg = f"Failed to send SMS: HTTP {response.status_code} - {response.text}"
+            
+            # Log error in background
+            duration_ms = int((datetime.now() - start_time).total_seconds() * 1000)
+            background_tasks.add_task(
+                log_activity_background,
+                call_control_id=request.call_control_id,
+                tool_used="send_booking_sms",
+                input_summary=f"SMS to {request.phone_number}",
+                output_summary="SMS sending failed",
+                duration_ms=duration_ms,
+                status="error",
+                error=error_msg
+            )
+            
+            return TelnyxToolResponse(
+                success=False,
+                error=error_msg,
+                dynamic_variables={"sms_sent": "false"},
+                meta={"execution_time_ms": duration_ms}
+            )
+            
+    except Exception as e:
+        logger.error(f"Error sending booking SMS: {str(e)}")
+        
+        # Log error in background
+        duration_ms = int((datetime.now() - start_time).total_seconds() * 1000)
+        background_tasks.add_task(
+            log_activity_background,
+            call_control_id=request.call_control_id,
+            tool_used="send_booking_sms",
+            input_summary=f"SMS to {request.phone_number}",
+            output_summary="Exception occurred",
+            duration_ms=duration_ms,
+            status="error",
+            error=str(e)
+        )
+        
+        return TelnyxToolResponse(
+            success=False,
+            error=f"SMS sending failed: {str(e)}",
+            dynamic_variables={"sms_sent": "false"},
             meta={"execution_time_ms": duration_ms}
         )
 

@@ -216,6 +216,47 @@ class ResponseValidationRequest(BaseModel):
     )
 
 
+class SMSBookingRequest(BaseModel):
+    """
+    Request model for SMS Booking Link tool.
+    
+    Sends personalized booking links to qualified SQL prospects during calls.
+    Only call_control_id and phone_number are required parameters.
+    """
+    call_control_id: str = Field(
+        ..., 
+        description="Call control identifier for tracking (REQUIRED)"
+    )
+    phone_number: str = Field(
+        ..., 
+        description="Caller's phone number from {{telnyx_end_user_target}} (REQUIRED)"
+    )
+    first_name: Optional[str] = Field(
+        None, 
+        description="Caller's first name from {{first_name}} variable"
+    )
+    last_name: Optional[str] = Field(
+        None,
+        description="Caller's last name from {{last_name}} variable"
+    )
+    company: Optional[str] = Field(
+        None, 
+        description="Caller's company from {{company}} variable"
+    )
+    region: Optional[str] = Field(
+        None,
+        description="Caller's region: 'Americas', 'Europe', or 'Other'"
+    )
+    qualification_reason: Optional[str] = Field(
+        None,
+        description="Detailed qualification reasoning from {{qualification_reason}} variable"
+    )
+    qualification_level: Optional[str] = Field(
+        None,
+        description="Qualification level from {{qualification_level}} variable"
+    )
+
+
 # Response Models
 
 class TelnyxToolResponse(BaseModel):
@@ -283,6 +324,7 @@ __all__ = [
     "SlackNotificationRequest",
     "ActivityLogRequest",
     "ResponseValidationRequest",
+    "SMSBookingRequest",
     "TelnyxToolResponse",
     "DynamicVariables"
 ]
