@@ -94,7 +94,7 @@ class SalesforceLookup:
                 SELECT Id, Name, Email, Phone, MobilePhone, Account.Name, Account.Id,
                        Phone_Number_Aggregated__c, Phone_Number_Aggregated_Plain_Text__c,
                        Form_Phone__c, ZoomInfo_Mobile_Phone__c,
-                       Account.Owner.Phone, Account.Owner.Name
+                       Account.Owner.Name
                 FROM Contact 
                 WHERE Phone = '{phone_number}' 
                    OR MobilePhone = '{phone_number}'
@@ -125,9 +125,8 @@ class SalesforceLookup:
                     flattened["Company"] = account.get("Name")
                     flattened["AccountId"] = account.get("Id")
 
-                    # Add account owner phone if available
+                    # Add account owner name if available
                     if account.get("Owner"):
-                        flattened["AE_Phone"] = account["Owner"].get("Phone")
                         flattened["AE_Name"] = account["Owner"].get("Name")
 
                 return flattened
@@ -146,7 +145,7 @@ class SalesforceLookup:
                 SELECT Id, Name, Email, Phone, MobilePhone, Company, Status,
                        Phone_Number_Aggregated__c, Phone_Number_Aggregated_Plain_Text__c,
                        Form_Phone__c, ZoomInfo_Mobile_Phone__c,
-                       Owner.Phone, Owner.Name
+                       Owner.Name
                 FROM Lead 
                 WHERE (Phone = '{phone_number}' 
                    OR MobilePhone = '{phone_number}'
@@ -177,7 +176,6 @@ class SalesforceLookup:
                 # Add owner information if available
                 if lead.get("Owner"):
                     owner = lead["Owner"]
-                    flattened["AE_Phone"] = owner.get("Phone")
                     flattened["AE_Name"] = owner.get("Name")
 
                 return flattened

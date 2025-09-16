@@ -131,7 +131,6 @@ async def salesforce_lookup_endpoint(
             "last_name": name_parts[1] if len(name_parts) > 1 else "",
             "email": record.get("Email", ""),
             "company": record.get("Company", ""),
-            "ae_phone": record.get("AE_Phone", ""),
             "ae_name": record.get("AE_Name", "")
         }
         
